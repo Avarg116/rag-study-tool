@@ -1,0 +1,19 @@
+Photosynthesis turns light energy into chemical energy. It happens in the chloroplasts of plant cells.
+
+The light-dependent reactions take place in the thylakoid membranes. They split water, release oxygen, and produce ATP and NADPH.
+
+The Calvin cycle takes place in the stroma of the chloroplast. It uses ATP and NADPH to fix carbon dioxide into sugar.
+
+Cellular respiration breaks glucose down to release energy. Most of the ATP is made in the mitochondria.
+
+Glycolysis is the first step of cellular respiration. It happens in the cytoplasm and splits glucose into two pyruvate molecules.
+
+The Krebs cycle runs in the mitochondrial matrix. It releases carbon dioxide and produces NADH and FADH2.
+
+The electron transport chain is in the inner mitochondrial membrane. It uses NADH and FADH2 to make most of the cell's ATP, and oxygen is the final electron acceptor.
+
+Mitosis produces two identical daughter cells. Its phases are prophase, metaphase, anaphase and telophase.
+
+Meiosis produces four genetically different cells with half the number of chromosomes. It is used to make gametes.
+
+DNA is made of nucleotides. Each nucleotide has a sugar, a phosphate group and one of four bases: adenine, thymine, guanine and cytosine.
