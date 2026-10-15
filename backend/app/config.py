@@ -7,10 +7,12 @@ class Settings(BaseSettings):
 
     anthropic_api_key: str = ""
     generation_model: str = "claude-sonnet-5"
+    agent_model: str = "claude-haiku-4-5"
 
     embedding_model_name: str = "all-MiniLM-L6-v2"
     chunk_size_chars: int = 1200
     chunk_overlap_chars: int = 200
     top_k: int = 5
+    search_mode: str = "agent"
 
 settings = Settings()

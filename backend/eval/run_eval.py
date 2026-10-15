@@ -1,16 +1,24 @@
 import json
+import sys
 import psycopg
 from psycopg.rows import dict_row
 
 from app.config import settings
 from app.services.embeddings import embed_text
 from app.services.retrieval import vector_search
+from app.services.search_agent import run_agent
 
 K = 5
 
 with open("eval/questions.json") as f:
     data = json.load(f)
 document = data["document"]
+
+#agent
+mode = sys.argv[1] if len(sys.argv) > 1 else "vector"
+questions = data["questions"]
+if len(sys.argv) > 2:
+    questions = questions[:int(sys.argv[2])]
 conn = psycopg.connect(settings.database_url, row_factory=dict_row)
 
 def first_hit_rank(rows, expected_pages):
@@ -20,6 +28,8 @@ def first_hit_rank(rows, expected_pages):
     return None
 
 def summary(label, ranks):
+    if not ranks:
+        return
     n = len(ranks)
     hit1 = ranks.count(1) / n
     hitk = (n - ranks.count(None)) / n
@@ -27,8 +37,11 @@ def summary(label, ranks):
     print(f"{label}: Hit@1 {hit1:.1%}, Hit@{K} {hitk:.1%}, MRR {mrr:.3f} ({n} questions)")
 
 results = []
-for q in data["questions"]:
-    rows = vector_search(conn, embed_text(q["question"]), K)
+for q in questions:
+    if mode == "agent":
+        rows = run_agent(conn, q["question"])
+    else:
+        rows = vector_search(conn, embed_text(q["question"]), K)
     rank = first_hit_rank(rows, q["expected_pages"])
     results.append((q, rank))
     result = "miss" if rank is None else f"rank {rank}"

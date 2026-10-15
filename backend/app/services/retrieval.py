@@ -8,7 +8,8 @@ client = Anthropic(api_key=settings.anthropic_api_key)
 def vector_search(conn: psycopg.Connection, question_vector, k: int):
     return conn.execute(
         """
-        SELECT c.page_number,
+        SELECT c.id,
+               c.page_number,
                c.content,
                d.filename,
                1 - (c.embedding <=> %s::vector) AS similarity
