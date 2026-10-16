@@ -9,6 +9,7 @@ def vector_search(conn: psycopg.Connection, question_vector, k: int):
     return conn.execute(
         """
         SELECT c.id,
+               c.document_id,
                c.page_number,
                c.content,
                d.filename,

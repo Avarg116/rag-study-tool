@@ -1,0 +1,235 @@
+:root {
+  --bg: #ffffff;
+  --sidebar: #f7f7f5;
+  --text: #37352f;
+  --muted: #9b9a97;
+  --border: #e9e9e7;
+  --hover: rgba(55, 53, 47, 0.08);
+  --blue: #2383e2;
+  --ring: rgba(15, 15, 15, 0.08);
+}
+
+/* dark colors, switched on by the theme toggle */
+:root[data-theme="dark"] {
+  --bg: #191919;
+  --sidebar: #202020;
+  --text: rgba(255, 255, 255, 0.86);
+  --muted: rgba(255, 255, 255, 0.45);
+  --border: rgba(255, 255, 255, 0.1);
+  --hover: rgba(255, 255, 255, 0.06);
+  --ring: rgba(255, 255, 255, 0.12);
+}
+
+body {
+  margin: 0;
+  font-family: Inter, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.label {
+  margin: 20px 0 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.main {
+  flex: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 72px 48px;
+  overflow-y: auto;
+}
+
+.main h1 {
+  margin: 0 0 8px;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0 0 28px;
+  color: var(--muted);
+}
+
+form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: border-color 0.15s;
+}
+
+form:focus-within {
+  border-color: var(--muted);
+}
+
+.search-icon {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+form input {
+  flex: 1;
+  padding: 6px 0;
+  font: inherit;
+  font-size: 16px;
+  color: var(--text);
+  background: none;
+  border: none;
+  outline: none;
+}
+
+form input::placeholder {
+  color: var(--muted);
+}
+
+form button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  color: white;
+  background: var(--blue);
+  border: none;
+  border-radius: 50%;
+  transition: background 0.15s, transform 0.1s;
+}
+
+form button:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
+form button:disabled {
+  color: var(--muted);
+  background: var(--hover);
+  cursor: default;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+.status,
+.hint {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.skeleton div {
+  height: 12px;
+  margin: 12px 0;
+  border-radius: 4px;
+  background: var(--hover);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton div:nth-child(3) {
+  width: 90%;
+}
+
+.skeleton div:nth-child(4) {
+  width: 60%;
+}
+
+.theme-toggle {
+  display: flex;
+  margin-left: auto;
+  padding: 4px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.mobile-header {
+  display: none;
+}
+
+/* animations used by more than one component */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .mobile-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    padding: 10px 12px;
+    font-weight: 600;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mobile-header button {
+    display: flex;
+    padding: 6px;
+    border: none;
+    border-radius: 4px;
+    background: none;
+    color: var(--text);
+  }
+
+  .main {
+    width: 100%;
+    padding: 24px 16px;
+    box-sizing: border-box;
+  }
+
+  .main h1 {
+    font-size: 28px;
+  }
+}

@@ -1,0 +1,47 @@
+.answer {
+  margin-top: 32px;
+  line-height: 1.7;
+  animation: fade-up 0.25s ease-out;
+}
+
+.source {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.source:hover,
+.source.active {
+  background: var(--hover);
+}
+
+.number {
+  width: 20px;
+  border-radius: 4px;
+  background: var(--hover);
+  font-size: 12px;
+  text-align: center;
+}
+
+.source.active .number {
+  color: white;
+  background: var(--blue);
+}
+
+.page {
+  margin-left: auto;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}

@@ -1,0 +1,112 @@
+.sidebar {
+  width: 240px;
+  padding: 16px 10px;
+  background: var(--sidebar);
+  border-right: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.sidebar h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 8px 0;
+  font-size: 15px;
+}
+
+.sidebar .label {
+  margin-left: 8px;
+}
+
+.doc,
+.upload {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.doc:hover,
+.upload:hover {
+  background: var(--hover);
+}
+
+.doc span {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.doc button {
+  border: none;
+  background: none;
+  display: flex;
+  color: var(--muted);
+  visibility: hidden;
+}
+
+.doc:hover button {
+  visibility: visible;
+}
+
+.upload {
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.doc.pending {
+  opacity: 0.5;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.doc.pending small {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.sidebar .empty {
+  margin: 4px 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.backdrop {
+  animation: fade-in 0.15s ease-out;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    width: 280px;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .doc,
+  .upload {
+    padding: 8px;
+  }
+
+  .doc button {
+    visibility: visible;
+  }
+}

@@ -4,6 +4,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     database_url: str = "postgresql://rag_user:rag_password@localhost:5432/rag_study_tool"
+    pdf_dir: str = "/data/pdfs"
 
     anthropic_api_key: str = ""
     generation_model: str = "claude-sonnet-5"

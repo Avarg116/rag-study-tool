@@ -1,8 +1,11 @@
 import uuid
+from pathlib import Path
 
 import psycopg
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi.responses import FileResponse
 
+from app.config import settings
 from app.database import get_db
 from app.schemas import DocumentOut
 from app.services.pdf_parser import extract_pages
@@ -11,15 +14,17 @@ from app.services.embeddings import embed_texts
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 
+def pdf_path(document_id):
+    return Path(settings.pdf_dir) / f"{document_id}.pdf"
 
 @router.post("/upload", response_model=DocumentOut)
-async def upload_document(
+def upload_document(
     file: UploadFile = File(...), conn: psycopg.Connection = Depends(get_db)
 ):
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are supported.")
 
-    pdf_bytes = await file.read()
+    pdf_bytes = file.file.read()
     try:
         pages = extract_pages(pdf_bytes)
     except Exception:
@@ -52,8 +57,12 @@ async def upload_document(
                 (document["id"], chunk["page_number"], chunk["chunk_index"], chunk["content"], vector),
             )
 
-    return document
+    # frontend pdf
+    path = pdf_path(document["id"])
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(pdf_bytes)
 
+    return document
 
 @router.get("/", response_model=list[DocumentOut])
 def list_documents(conn: psycopg.Connection = Depends(get_db)):
@@ -65,6 +74,12 @@ def list_documents(conn: psycopg.Connection = Depends(get_db)):
         """
     ).fetchall()
 
+@router.get("/{document_id}/file")
+def get_document_file(document_id: uuid.UUID):
+    path = pdf_path(document_id)
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail="PDF not found.")
+    return FileResponse(path, media_type="application/pdf")
 
 @router.delete("/{document_id}")
 def delete_document(document_id: uuid.UUID, conn: psycopg.Connection = Depends(get_db)):
@@ -73,4 +88,5 @@ def delete_document(document_id: uuid.UUID, conn: psycopg.Connection = Depends(g
     ).fetchone()
     if not deleted:
         raise HTTPException(status_code=404, detail="Document not found.")
+    pdf_path(document_id).unlink(missing_ok=True)
     return {"deleted": str(document_id)}

@@ -32,6 +32,8 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app
+      - pdfdata:/data/pdfs
 
 volumes:
   pgdata:
+  pdfdata:

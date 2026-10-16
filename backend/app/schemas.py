@@ -13,6 +13,7 @@ class QueryRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
 
 class SourceChunk(BaseModel):
+    document_id: uuid.UUID
     filename: str
     page_number: int
     content: str

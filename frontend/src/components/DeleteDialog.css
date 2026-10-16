@@ -1,0 +1,73 @@
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(15, 15, 15, 0.5);
+  animation: fade-in 0.15s ease-out;
+}
+
+.dialog {
+  width: 100%;
+  max-width: 320px;
+  padding: 24px 20px 16px;
+  text-align: center;
+  background: var(--bg);
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px var(--ring), 0 12px 32px rgba(0, 0, 0, 0.2);
+  animation: pop 0.15s ease-out;
+}
+
+.dialog h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.dialog p {
+  margin: 0 0 20px;
+  font-size: 14px;
+  color: var(--muted);
+  word-break: break-word;
+}
+
+.dialog-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dialog-buttons button {
+  width: 100%;
+  height: 34px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.dialog-buttons button:hover {
+  background: var(--hover);
+}
+
+.dialog-buttons .danger {
+  color: #eb5757;
+  border-color: rgba(235, 87, 87, 0.5);
+}
+
+.dialog-buttons .danger:hover {
+  background: rgba(235, 87, 87, 0.1);
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
