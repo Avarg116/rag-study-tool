@@ -46,6 +46,10 @@
   border: none;
 }
 
+.viewer-text {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .viewer {
     position: fixed;
@@ -54,5 +58,20 @@
     width: auto;
     background: var(--bg);
     border: none;
+  }
+
+  .viewer iframe {
+    display: none;
+  }
+
+  .viewer-text {
+    display: block;
+    flex: 1;
+    overflow: auto;
+    margin: 0;
+    padding: 16px;
+    font-size: 15px;
+    line-height: 1.6;
+    white-space: pre-wrap;
   }
 }

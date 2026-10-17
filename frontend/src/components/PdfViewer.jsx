@@ -13,6 +13,8 @@ function PdfViewer({ source, onClose }) {
         <button onClick={onClose} title="Close"><X size={18} /></button>
       </div>
       <iframe key={url} src={url} />
+      {/* phones can't open a PDF on a page, so show the text instead */}
+      <p className="viewer-text">{source.content}</p>
     </section>
   )
 }

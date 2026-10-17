@@ -1,15 +1,10 @@
-from io import BytesIO
-
-from pypdf import PdfReader
+import pypdfium2 as pdfium
 
 
 def extract_pages(pdf_bytes: bytes) -> list[str]:
-    reader = PdfReader(BytesIO(pdf_bytes))
+    pdf = pdfium.PdfDocument(pdf_bytes)
     pages = []
-    for page in reader.pages:
-        try:
-            text = page.extract_text() or ""
-        except Exception:
-            text = ""
+    for page in pdf:
+        text = page.get_textpage().get_text_range()
         pages.append(text.strip())
     return pages

@@ -1,4 +1,6 @@
 {$DOMAIN:localhost} {
+	encode gzip
+
 	# /api/query -> FastAPI's /query
 	handle_path /api/* {
 		reverse_proxy api:8000
