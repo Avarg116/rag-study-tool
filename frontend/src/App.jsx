@@ -79,6 +79,7 @@ function App() {
       body: JSON.stringify({ question: text }),
     })
     if (res.ok) setResult(await res.json())
+    else if (res.status === 429) alert('You reached the question limit for now. Try again later.')
     else alert('Something went wrong')
     setLoading(false)
   }

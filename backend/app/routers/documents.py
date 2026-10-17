@@ -21,6 +21,8 @@ def pdf_path(document_id):
 def upload_document(
     file: UploadFile = File(...), conn: psycopg.Connection = Depends(get_db)
 ):
+    if settings.demo_mode:
+        raise HTTPException(status_code=403, detail="Uploading is turned off in the demo.")
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are supported.")
 
@@ -83,6 +85,8 @@ def get_document_file(document_id: uuid.UUID):
 
 @router.delete("/{document_id}")
 def delete_document(document_id: uuid.UUID, conn: psycopg.Connection = Depends(get_db)):
+    if settings.demo_mode:
+        raise HTTPException(status_code=403, detail="Deleting is turned off in the demo.")
     deleted = conn.execute(
         "DELETE FROM documents WHERE id = %s RETURNING id", (document_id,)
     ).fetchone()

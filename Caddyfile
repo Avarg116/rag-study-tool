@@ -1,0 +1,12 @@
+{$DOMAIN:localhost} {
+	# /api/query -> FastAPI's /query
+	handle_path /api/* {
+		reverse_proxy api:8000
+	}
+
+	# everything else is the React app
+	handle {
+		root * /srv
+		file_server
+	}
+}

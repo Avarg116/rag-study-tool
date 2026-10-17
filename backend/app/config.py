@@ -16,4 +16,6 @@ class Settings(BaseSettings):
     top_k: int = 5
     search_mode: str = "agent"
 
+    demo_mode: bool = False
+
 settings = Settings()
