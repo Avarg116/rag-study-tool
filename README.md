@@ -80,3 +80,7 @@ docker-compose.yml
 ## Things to improve
 
 - Check that the quotes the model cites actually appear in the source.
+
+## References
+
+- [Code a simple RAG from scratch](https://huggingface.co/blog/ngxson/make-your-own-rag) by Xuan Son Nguyen (Hugging Face blog)
