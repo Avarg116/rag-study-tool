@@ -5,7 +5,7 @@ from psycopg.rows import dict_row
 
 from app.config import settings
 from app.services.embeddings import embed_text
-from app.services.retrieval import vector_search
+from app.services.retrieval import hybrid_search, vector_search
 from app.services.search_agent import run_agent
 
 K = 5
@@ -40,6 +40,8 @@ results = []
 for q in questions:
     if mode == "agent":
         rows = run_agent(conn, q["question"])
+    elif mode == "hybrid":
+        rows = hybrid_search(conn, q["question"], K)
     else:
         rows = vector_search(conn, embed_text(q["question"]), K)
     rank = first_hit_rank(rows, q["expected_pages"])
