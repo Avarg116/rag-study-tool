@@ -2,13 +2,13 @@
 
 ![tests](https://github.com/Avarg116/rag-study-tool/actions/workflows/tests.yml/badge.svg)
 
-A study tool where you upload PDFs (notes, textbook chapters) and ask questions about them. Answers only come from your documents and cite the page they came from.
+A RAG from scratch study tool where you upload PDFs (notes, textbook chapters) and ask questions about them. Answers only come from your documents and cite the page they came from.
 
 ## Demo
 
 https://github.com/user-attachments/assets/6df1e282-e9a0-49f5-8735-0b36777ae76d
 
-Try it: https://52-10-150-185.sslip.io (demo mode with a sample PDF, uploads are turned off)
+Try it: https://52-10-150-185.sslip.io (demo mode with a sample PDF, uploads are turned off).
 
 ## How it works
 
@@ -20,8 +20,8 @@ flowchart TD
     end
     Vectors --> DB[(PostgreSQL + pgvector)]
 
-    User[User] -->|question| Agent[Search agent]
-    Agent -->|search query| DB
+    User[User] -->|question| Agent[Search agent<br/>Claude Haiku]
+    Agent -->|hybrid search| DB
     DB -->|top 5 chunks| Agent
     Agent -->|chosen chunks| LLM[Claude Sonnet]
     LLM -->|answer + sources| User
@@ -41,14 +41,14 @@ I made 40 questions about CLRS Part II (chapters 6-9) and noted the page where e
 | Hybrid search (BM25 + vector) | 72.5% | 92.5% | 0.800 |
 | Search agent (vector search) | 97.5% | 97.5% | 0.975 |
 
-Plain vector search missed questions about exact names like `MAX-HEAPIFY`, because embeddings match the general meaning of a passage, not specific terms. The agent fixed most of them by searching again with better words, at about $0.01 per question.
+Plain vector search missed questions about exact names, because embeddings match the general meaning of a passage, not specific terms. Hybrid search found more of them by adding BM25 keyword search. The agent did best by searching again with better words, at about $0.01 per question.
 
 ## Key decisions
 
 - **Chunking per page:** I split each page into 1,200-character chunks with 200 characters of overlap and never split across pages, so every chunk keeps its page number for citations.
-- **Hybrid search:** Vector search missed exact terms like `MAX-HEAPIFY`, so I added BM25 keyword search and merged both result lists with reciprocal rank fusion. Hit@5 went from 87.5% to 92.5%.
-- **Agent picks the evidence:** It finishes by calling a `submit_evidence` tool with the chunks it chose, so I can score it with the same eval as plain search.
-- **2 models:** The agent uses Haiku because it makes several calls per question, and Sonnet only writes the final answer.
+- **Hybrid search:** vector search missed exact terms like MAX-HEAPIFY, so I added BM25 keyword search and merged both result lists with reciprocal rank fusion.
+- **Agent picks the evidence:** it finishes by calling a `submit_evidence` tool with the chunks it chose, so I can score it with the same eval as plain search.
+- **2 models:** the agent uses Haiku because it makes several calls per question, and Sonnet only writes the final answer.
 
 ## Run it
 
