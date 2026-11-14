@@ -28,7 +28,7 @@ flowchart TD
 ```
 
 1. The PDF's text is extracted, split into chunks, embedded with sentence-transformers, and stored in PostgreSQL with pgvector.
-2. A search agent (Claude Haiku) runs hybrid search (BM25 + vector search) and searches again if the results aren't good enough.
+2. A search agent (Claude Haiku) runs hybrid search (BM25 + vector search) and searches again if the results are not good enough.
 3. Claude Sonnet writes the answer from those chunks and cites the page each one came from.
 
 ## Results
@@ -41,18 +41,18 @@ I made 40 questions about CLRS Part II (chapters 6-9) and noted the page where e
 | Hybrid search (BM25 + vector) | 72.5% | 92.5% | 0.800 |
 | Search agent (vector search) | 97.5% | 97.5% | 0.975 |
 
-Plain vector search missed questions about exact names, because embeddings match the general meaning of a passage, not specific terms. Hybrid search found more of them by adding BM25 keyword search. The agent did best by searching again with better words, at about $0.01 per question.
+Plain vector search missed questions about exact names because embeddings match the general meaning of a passage, not specific terms. Hybrid search found more of them by adding BM25 keyword search. The agent did best by searching again with better words, at about $0.01 per question.
 
 ## Key decisions
 
-- **Chunking per page:** I split each page into 1,200-character chunks with 200 characters of overlap and never split across pages, so every chunk keeps its page number for citations.
+- **Chunking per page:** I split each page into 1,200-character chunks with 200 characters of overlap, so every chunk keeps its page number for citations.
 - **Hybrid search:** vector search missed exact terms like MAX-HEAPIFY, so I added BM25 keyword search and merged both result lists with reciprocal rank fusion.
 - **Agent picks the evidence:** it finishes by calling a `submit_evidence` tool with the chunks it chose, so I can score it with the same eval as plain search.
 - **2 models:** the agent uses Haiku because it makes several calls per question, and Sonnet only writes the final answer.
 
 ## Run it
 
-Requirements: Docker, Node.js and an Anthropic API key.
+Requirements: Docker, Node.js, and an Anthropic API key.
 
 1. Copy `backend/.env.example` to `backend/.env` and add your API key.
 
@@ -74,7 +74,7 @@ npm run dev
 
 Tests: `docker compose exec api python -m pytest tests -q`
 
-Eval: `docker compose exec api python -m eval.run_eval agent` (the vector and hybrid modes are free, the agent run costs about $0.40).
+Eval: `docker compose exec api python -m eval.run_eval agent` (the vector and hybrid modes are free and the agent run costs about $0.40).
 
 ## Project structure
 
