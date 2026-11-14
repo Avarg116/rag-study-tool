@@ -17,7 +17,7 @@ class SourceChunk(BaseModel):
     filename: str
     page_number: int
     content: str
-    similarity: float
+    similarity: float | None = None
 
 class QueryResponse(BaseModel):
     answer: str

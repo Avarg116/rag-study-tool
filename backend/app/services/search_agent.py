@@ -5,8 +5,7 @@ from anthropic import Anthropic
 from psycopg.rows import dict_row
 
 from app.config import settings
-from app.services.embeddings import embed_text
-from app.services.retrieval import vector_search
+from app.services.retrieval import hybrid_search
 
 client = Anthropic(api_key=settings.anthropic_api_key)
 
@@ -39,7 +38,7 @@ most relevant first. Do not answer the question yourself."""
 
 # 2. run when the model calls the tool
 def run_search(conn, query, seen):
-    rows = vector_search(conn, embed_text(query), settings.top_k)
+    rows = hybrid_search(conn, query, settings.top_k)
     seen_ids = [row["id"] for row in seen]
     results = []
     for row in rows:
